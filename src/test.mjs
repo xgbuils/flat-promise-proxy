@@ -113,4 +113,26 @@ describe("flatPromiseProxy", () => {
       assert.deepEqual(transformedProxy, [1, 3]);
     });
   });
+
+  describe("rejections", () => {
+    it("target is a promise that rejects", async () => {
+      const proxy = flatPromiseProxy(Promise.reject("error"));
+      assert.deepEqual(await proxy.foo.catch((error) => error), "error");
+    });
+
+    it("accessing to a not existent prop", async () => {
+      const proxy = flatPromiseProxy(Promise.resolve({}));
+      const error = await proxy.foo.bar.catch((e) => e);
+      return assert.equal(
+        error.message,
+        "Cannot read properties of undefined (reading 'bar')"
+      );
+    });
+
+    it("calling not callable method", async () => {
+      const proxy = flatPromiseProxy(Promise.resolve({ foo: "bar" }));
+      const error = await proxy.foo().catch((e) => e);
+      return assert.equal(error.message.includes("is not a function"), true);
+    });
+  });
 });

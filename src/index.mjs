@@ -11,10 +11,12 @@ const bind = (target, prop) => {
   return target[prop];
 };
 
+const promiseMethods = ["then", "catch", "finally"];
+
 const promiseHandler = {
   get: (resolver, prop) => {
     const promise = resolver();
-    if (prop === "then") {
+    if (promiseMethods.includes(prop)) {
       return functionProxy(bind(promise, prop));
     }
     const nextPromise = promise.then((target) =>
@@ -24,8 +26,8 @@ const promiseHandler = {
   },
   apply: (resolver, thisArg, args) => {
     return flatPromiseProxy(
-      resolver().then((f) => {
-        return flatPromiseProxy(f(...args));
+      resolver().then((fn) => {
+        return flatPromiseProxy(fn(...args));
       })
     );
   },
