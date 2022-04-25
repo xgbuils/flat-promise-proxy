@@ -1,0 +1,22 @@
+{
+  "name": "flat-promise-proxy",
+  "version": "0.1.0",
+  "description": "proxy that flatten a promise that resolves to an object to an object whose props or methods resolves to a promise",
+  "main": "src/index.js",
+  "scripts": {
+    "format": "prettier --write src",
+    "test": "mocha src/test.mjs"
+  },
+  "keywords": [
+    "proxy",
+    "promise",
+    "flat",
+    "flatten"
+  ],
+  "author": "Xavier Garcia Buils <xgbuils@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "mocha": "^9.2.2",
+    "prettier": "^2.6.2"
+  }
+}
